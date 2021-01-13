@@ -1,7 +1,9 @@
 #include "Offer.h"
 
-Offer::Offer(const SpecialOfferType& offerType, const Product& product, double argument)
-        : offerType(offerType), product(product), argument(argument) {}
+#include <utility>
+
+Offer::Offer(const SpecialOfferType& offerType, Product  product, double argument)
+        : offerType(offerType), product(std::move(product)), argument(argument) {}
 
 SpecialOfferType Offer::getOfferType() const {
         return offerType;
@@ -16,11 +18,18 @@ double Offer::getArgument() const {
 }
 
 double Offer::calculateDiscountAmount(double unitPrice, double quantity) const {
-    std::cout << "base" << std::endl;
-    if (quantity < discountThreshold) return 0;
+    if (quantity < discountThreshold)
+        return 0;
+
     int quantityAsInt = (int)quantity;
     int numberOfDiscounts = quantityAsInt / discountThreshold;
-    double discountAmount = quantity * unitPrice - ((numberOfDiscounts * 2 * unitPrice) + quantityAsInt % discountThreshold * unitPrice);
+
+    double actualTotalPrice = quantity * unitPrice;
+    double priceOfDiscountedItems = numberOfDiscounts * (numberOfItemsToPayWithDiscount * discountedUnitPrice);
+    double remainingPriceToPay = quantityAsInt % discountThreshold * unitPrice;
+    double totalPriceWithDiscount = priceOfDiscountedItems + remainingPriceToPay;
+    double discountAmount = actualTotalPrice - totalPriceWithDiscount;
+
     return discountAmount;
 }
 
@@ -29,24 +38,24 @@ std::string Offer::getDiscountDescription() const {
 }
 
 XForYOffer::XForYOffer(const SpecialOfferType &offerType, const Product &product, double argument) : Offer(offerType, product, argument) {
-    X = 1;
-    Y = 1;
+    discountedUnitPrice = argument; // equals to unitPrice
+    numberOfItemsToPayWithDiscount = 1;
     if (offerType == SpecialOfferType::ThreeForTwo) {
-        X = 3;
-        Y = 2;
+        discountThreshold = 3;
+        numberOfItemsToPayWithDiscount = 2;
     }
-    discountThreshold = X;
-    discountDescription = std::to_string(discountThreshold) + " for " + std::to_string(Y); // TODO: refactor this since it's kinda duplicate code.
+    discountDescription = std::to_string(discountThreshold) + " for " + std::to_string(numberOfItemsToPayWithDiscount); // TODO: refactor this since it's kinda duplicate code.
 }
 
-AmountOffer::AmountOffer(const SpecialOfferType &offerType, const Product &product, double argument) : Offer(offerType, product, argument), amount(argument) {
-    discountThreshold = 1;
+AmountOffer::AmountOffer(const SpecialOfferType &offerType, const Product &product, double argument) : Offer(offerType, product, argument) {
+    discountedUnitPrice = argument;
+    numberOfItemsToPayWithDiscount = 1;
     if (offerType == SpecialOfferType::TwoForAmount) {
         discountThreshold = 2;
     } else if (offerType == SpecialOfferType::FiveForAmount) {
         discountThreshold = 5;
     }
-    discountDescription = std::to_string(discountThreshold) + " for " + std::to_string(amount);
+    discountDescription = std::to_string(discountThreshold) + " for " + std::to_string(discountedUnitPrice);
 }
 
 PercentageOffer::PercentageOffer(const SpecialOfferType &offerType, const Product &product, double argument) : Offer(offerType, product, argument), percentage(argument) {
@@ -54,24 +63,16 @@ PercentageOffer::PercentageOffer(const SpecialOfferType &offerType, const Produc
 }
 
 double PercentageOffer::calculateDiscountAmount(double unitPrice, double quantity) const {
-    double discountAmount = quantity * unitPrice * percentage / 100.0;
-    std::cout << "test" << std::endl;
+    double actualTotalPrice = quantity * unitPrice;
+    double discountAmount = actualTotalPrice * percentage / 100.0;
     return discountAmount;
 }
 
 double AmountOffer::calculateDiscountAmount(double unitPrice, double quantity) const {
-    if (quantity < discountThreshold) return 0;
-    int quantityAsInt = (int)quantity;
-    int numberOfDiscounts = quantityAsInt / discountThreshold;
-    double discountAmount = quantity * unitPrice - ((numberOfDiscounts * amount) + quantityAsInt % discountThreshold * unitPrice);
-    return discountAmount;
+    return Offer::calculateDiscountAmount(unitPrice, quantity);
 }
 
 double XForYOffer::calculateDiscountAmount(double unitPrice, double quantity) const {
-    if (quantity < discountThreshold) return 0;
-    int quantityAsInt = (int)quantity;
-    int numberOfDiscounts = quantityAsInt / discountThreshold;
-    double discountAmount = quantity * unitPrice - ((numberOfDiscounts * Y * unitPrice) + quantityAsInt % discountThreshold * unitPrice);
-    return discountAmount;
+    return Offer::calculateDiscountAmount(unitPrice, quantity);
 }
 

@@ -3,7 +3,7 @@
 Teller::Teller(SupermarketCatalog *catalog) : catalog(catalog) {}
 
 void Teller::addSpecialOffer(SpecialOfferType offerType, const Product& product, double argument) {
-    Offer* offer;
+    Offer* offer = nullptr;
     if (offerType == SpecialOfferType::TwoForAmount || offerType == SpecialOfferType::FiveForAmount) {
         offer = new AmountOffer(offerType, product, argument);
     } else if (offerType == SpecialOfferType::ThreeForTwo) {
