@@ -45,16 +45,16 @@ void ShoppingCart::handleOffers(Receipt& receipt, SupermarketCatalog* catalog) {
             } if (offer.getOfferType() == SpecialOfferType::FiveForAmount) {
                 discountThreshold = 5;
             }
-            int numberOfXs = quantityAsInt / discountThreshold;
+            int numberOfDiscounts = quantityAsInt / discountThreshold;
             if (offer.getOfferType() == SpecialOfferType::ThreeForTwo && quantityAsInt > 2) {
-                double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
+                double discountAmount = quantity * unitPrice - ((numberOfDiscounts * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
                 discount = new Discount("3 for 2", -discountAmount, product);
             }
             if (offer.getOfferType() == SpecialOfferType::TenPercentDiscount) {
                 discount = new Discount(std::to_string(offer.getArgument()) + "% off", -quantity * unitPrice * offer.getArgument() / 100.0, product);
             }
             if (offer.getOfferType() == SpecialOfferType::FiveForAmount && quantityAsInt >= 5) {
-                double discountTotal = unitPrice * quantity - (offer.getArgument() * numberOfXs + quantityAsInt % 5 * unitPrice);
+                double discountTotal = unitPrice * quantity - (offer.getArgument() * numberOfDiscounts + quantityAsInt % 5 * unitPrice);
                 discount = new Discount(std::to_string(discountThreshold) + " for " + std::to_string(offer.getArgument()), -discountTotal, product);
             }
             if (discount != nullptr)
