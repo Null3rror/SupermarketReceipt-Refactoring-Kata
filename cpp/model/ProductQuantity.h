@@ -5,7 +5,6 @@
 #include "Product.h"
 
 class ProductQuantity {
-private:
 
 public:
     ProductQuantity(const Product& product, double quantity);

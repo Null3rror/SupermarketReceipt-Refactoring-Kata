@@ -8,12 +8,13 @@
 #include "OfferRepository.h"
 #include "Receipt.h"
 #include "SupermarketCatalog.h"
+#include <algorithm> // for std::copy_if
 
 class ShoppingCart {
 public:
     std::vector<ProductQuantity> getItems() const;
 
-    std::map<Product, double> getProductQuantities() const;
+    std::map<const Product, double> getProductQuantities() const;
 
     void addItem(const Product& product);
 
@@ -23,7 +24,7 @@ public:
 
 private:
     std::vector<ProductQuantity> items;
-    std::map<Product, double> productQuantities;
+    std::map<const Product, double> productQuantities;
 };
 
 

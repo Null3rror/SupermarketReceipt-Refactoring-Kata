@@ -1,5 +1,4 @@
 #include "Offer.h"
-
 #include <utility>
 
 Offer::Offer(const SpecialOfferType& offerType, Product  product, double argument)
@@ -27,8 +26,8 @@ double Offer::calculateDiscountAmount(double unitPrice, double quantity) const {
     double actualTotalPrice = quantity * unitPrice;
     double priceOfDiscountedItems = numberOfDiscounts * (numberOfItemsToPayWithDiscount * discountedUnitPrice);
     double remainingPriceToPay = quantityAsInt % discountThreshold * unitPrice;
-    double totalPriceWithDiscount = priceOfDiscountedItems + remainingPriceToPay;
-    double discountAmount = actualTotalPrice - totalPriceWithDiscount;
+    double totalPriceToPayWithDiscount = priceOfDiscountedItems + remainingPriceToPay;
+    double discountAmount = actualTotalPrice - totalPriceToPayWithDiscount;
 
     return discountAmount;
 }
@@ -38,13 +37,13 @@ std::string Offer::getDiscountDescription() const {
 }
 
 XForYOffer::XForYOffer(const SpecialOfferType &offerType, const Product &product, double argument) : Offer(offerType, product, argument) {
-    discountedUnitPrice = argument; // equals to unitPrice
+    discountedUnitPrice = argument;
     numberOfItemsToPayWithDiscount = 1;
     if (offerType == SpecialOfferType::ThreeForTwo) {
         discountThreshold = 3;
         numberOfItemsToPayWithDiscount = 2;
     }
-    discountDescription = std::to_string(discountThreshold) + " for " + std::to_string(numberOfItemsToPayWithDiscount); // TODO: refactor this since it's kinda duplicate code.
+    discountDescription = std::to_string(discountThreshold) + " for " + std::to_string(numberOfItemsToPayWithDiscount);
 }
 
 AmountOffer::AmountOffer(const SpecialOfferType &offerType, const Product &product, double argument) : Offer(offerType, product, argument) {

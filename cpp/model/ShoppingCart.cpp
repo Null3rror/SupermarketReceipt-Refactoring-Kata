@@ -6,7 +6,7 @@ std::vector<ProductQuantity> ShoppingCart::getItems() const {
     return items;
 }
 
-std::map<Product, double> ShoppingCart::getProductQuantities() const {
+std::map<const Product, double> ShoppingCart::getProductQuantities() const {
     return productQuantities;
 }
 

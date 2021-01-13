@@ -6,6 +6,7 @@
 #include "SpecialOfferType.h"
 
 class Offer {
+
 public:
     Offer() = default;
     Offer(const SpecialOfferType& offerType, Product  product, double argument);
@@ -20,15 +21,15 @@ public:
 
     std::string getDiscountDescription() const;
 
-
 protected:
     double argument;
     double discountedUnitPrice;
-    int discountThreshold; // if we have X items, the discount will trigger
-    int numberOfItemsToPayWithDiscount; // this is the Y. (if we have X items, we have to only for Y items). (Y < X)
+    int discountThreshold;
+    int numberOfItemsToPayWithDiscount;
     std::string discountDescription;
     SpecialOfferType offerType;
     Product product;
+
 
 };
 
