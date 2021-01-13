@@ -21,11 +21,11 @@ public:
     static OfferRepository& getInstance();
 
     bool isOfferForProduct(const Product& product) const;
-    const Offer& getOfferForProduct(const Product& product) const;
-    void addOffer(const Offer&& offer);
+    const Offer* getOfferForProduct(const Product& product) const;
+    void addOffer(Offer* offer);
 
 private:
-    std::map<Product, Offer> offers;
+    std::map<Product, Offer*> offers;
 
 };
 

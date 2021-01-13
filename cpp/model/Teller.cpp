@@ -3,7 +3,15 @@
 Teller::Teller(SupermarketCatalog *catalog) : catalog(catalog) {}
 
 void Teller::addSpecialOffer(SpecialOfferType offerType, const Product& product, double argument) {
-    OfferRepository::getInstance().addOffer(std::move(Offer(offerType, product, argument)));
+    Offer* offer;
+    if (offerType == SpecialOfferType::TwoForAmount || offerType == SpecialOfferType::FiveForAmount) {
+        offer = new AmountOffer(offerType, product, argument);
+    } else if (offerType == SpecialOfferType::ThreeForTwo) {
+        offer = new XForYOffer(offerType, product, argument);
+    } else if (offerType == SpecialOfferType::TenPercentDiscount) {
+        offer = new PercentageOffer(offerType, product, argument);
+    }
+    OfferRepository::getInstance().addOffer(offer);
 }
 
 Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
