@@ -32,20 +32,20 @@ void ShoppingCart::handleOffers(Receipt& receipt, SupermarketCatalog* catalog) {
             double unitPrice = catalog->getUnitPrice(product);
             int quantityAsInt = (int) quantity;
             Discount* discount = nullptr;
-            int x = 1;
+            int discountThreshold = 1;
             if (offer.getOfferType() == SpecialOfferType::ThreeForTwo) {
-                x = 3;
+                discountThreshold = 3;
             } else if (offer.getOfferType() == SpecialOfferType::TwoForAmount) {
-                x = 2;
+                discountThreshold = 2;
                 if (quantityAsInt >= 2) {
-                    double total = offer.getArgument() * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
+                    double total = offer.getArgument() * (quantityAsInt / discountThreshold) + quantityAsInt % 2 * unitPrice;
                     double discountN = unitPrice * quantity - total;
                     discount = new Discount("2 for " + std::to_string(offer.getArgument()), -discountN, product);
                 }
             } if (offer.getOfferType() == SpecialOfferType::FiveForAmount) {
-                x = 5;
+                discountThreshold = 5;
             }
-            int numberOfXs = quantityAsInt / x;
+            int numberOfXs = quantityAsInt / discountThreshold;
             if (offer.getOfferType() == SpecialOfferType::ThreeForTwo && quantityAsInt > 2) {
                 double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
                 discount = new Discount("3 for 2", -discountAmount, product);
@@ -55,7 +55,7 @@ void ShoppingCart::handleOffers(Receipt& receipt, SupermarketCatalog* catalog) {
             }
             if (offer.getOfferType() == SpecialOfferType::FiveForAmount && quantityAsInt >= 5) {
                 double discountTotal = unitPrice * quantity - (offer.getArgument() * numberOfXs + quantityAsInt % 5 * unitPrice);
-                discount = new Discount(std::to_string(x) + " for " + std::to_string(offer.getArgument()), -discountTotal, product);
+                discount = new Discount(std::to_string(discountThreshold) + " for " + std::to_string(offer.getArgument()), -discountTotal, product);
             }
             if (discount != nullptr)
                 receipt.addDiscount(*discount);
