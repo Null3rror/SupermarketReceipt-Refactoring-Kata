@@ -3,7 +3,7 @@
 Teller::Teller(SupermarketCatalog *catalog) : catalog(catalog) {}
 
 void Teller::addSpecialOffer(SpecialOfferType offerType, const Product& product, double argument) {
-    offers[product] = Offer(offerType, product, argument);
+    OfferRepository::getInstance().addOffer(std::move(Offer(offerType, product, argument)));
 }
 
 Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
@@ -16,7 +16,7 @@ Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
         double price = quantity * unitPrice;
         receipt.addProduct(p, quantity, unitPrice, price);
     }
-    theCart.handleOffers(receipt, offers, catalog);
+    theCart.handleOffers(receipt, catalog);
 
     return receipt;
 }

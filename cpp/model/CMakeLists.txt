@@ -5,6 +5,7 @@ set(SOURCE_FILES Discount.cpp
         Offer.cpp Offer.h SpecialOfferType.h
         ProductUnit.h ProductQuantity.cpp ProductQuantity.h
         ReceiptItem.cpp ReceiptItem.h Receipt.cpp Receipt.h
+        OfferRepository.h OfferRepository.cpp
         ShoppingCart.cpp ShoppingCart.h SupermarketCatalog.h Teller.cpp
         Teller.h ReceiptPrinter.h ReceiptPrinter.cpp)
 

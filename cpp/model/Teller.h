@@ -4,7 +4,7 @@
 
 #include <map>
 #include "SupermarketCatalog.h"
-#include "Offer.h"
+#include "OfferRepository.h"
 #include "Receipt.h"
 #include "ShoppingCart.h"
 
@@ -18,7 +18,7 @@ public:
 
 private:
     SupermarketCatalog* catalog;
-    std::map<Product, Offer> offers;
+//    std::map<Product, Offer> offers;
 };
 
 

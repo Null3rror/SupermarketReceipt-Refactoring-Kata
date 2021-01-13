@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 #include "ProductQuantity.h"
-#include "Offer.h"
+#include "OfferRepository.h"
 #include "Receipt.h"
 #include "SupermarketCatalog.h"
 
@@ -19,7 +19,7 @@ public:
 
     void addItemQuantity(const Product& product, double quantity);
 
-    void handleOffers(Receipt& receipt, std::map<Product, Offer> offers, SupermarketCatalog* catalog);
+    void handleOffers(Receipt& receipt, SupermarketCatalog* catalog);
 
 private:
     std::vector<ProductQuantity> items;

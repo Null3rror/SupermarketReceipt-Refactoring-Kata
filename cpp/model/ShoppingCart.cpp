@@ -23,17 +23,16 @@ void ShoppingCart::addItemQuantity(const Product& product, double quantity) {
     }
 }
 
-void ShoppingCart::handleOffers(Receipt& receipt, std::map<Product, Offer> offers, SupermarketCatalog* catalog) {
+void ShoppingCart::handleOffers(Receipt& receipt, SupermarketCatalog* catalog) {
     for (const auto& productQuantity : productQuantities) {
         Product product = productQuantity.first;
         double quantity = productQuantity.second;
-        if (offers.find(product) != offers.end()) {
-            auto offer = offers[product];
+        if (OfferRepository::getInstance().isOfferForProduct(product)) {
+            auto offer = OfferRepository::getInstance().getOfferForProduct(product);
             double unitPrice = catalog->getUnitPrice(product);
             int quantityAsInt = (int) quantity;
             Discount* discount = nullptr;
             int x = 1;
-
             if (offer.getOfferType() == SpecialOfferType::ThreeForTwo) {
                 x = 3;
             } else if (offer.getOfferType() == SpecialOfferType::TwoForAmount) {
