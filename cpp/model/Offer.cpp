@@ -16,8 +16,12 @@ double Offer::getArgument() const {
         return argument;
 }
 
+bool Offer::canUseDiscount(double quantity) const {
+    return quantity >= discountThreshold;
+}
+
 double Offer::calculateDiscountAmount(double unitPrice, double quantity) const {
-    if (quantity < discountThreshold)
+    if (!canUseDiscount(quantity))
         return 0;
 
     int quantityAsInt = (int)quantity;

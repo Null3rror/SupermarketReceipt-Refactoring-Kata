@@ -17,6 +17,7 @@ public:
 
     double getArgument() const;
 
+    virtual bool canUseDiscount(double quantity) const;
     virtual double calculateDiscountAmount(double unitPrice, double quantity) const = 0;
 
     std::string getDiscountDescription() const;
