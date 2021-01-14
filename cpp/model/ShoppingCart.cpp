@@ -1,7 +1,5 @@
 #include "ShoppingCart.h"
 
-void addItemQuantity(const Product& product, double quantity);
-
 std::vector<ProductQuantity> ShoppingCart::getItems() const {
     return items;
 }
