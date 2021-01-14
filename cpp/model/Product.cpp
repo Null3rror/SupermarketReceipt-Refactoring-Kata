@@ -1,6 +1,8 @@
 #include "Product.h"
 
-Product::Product(const std::string& name, const ProductUnit& unit) : name(name), unit(unit) {}
+#include <utility>
+
+Product::Product(std::string  name, const ProductUnit& unit) : name(std::move(name)), unit(unit) {}
 
 std::string Product::getName() const {
     return name;
