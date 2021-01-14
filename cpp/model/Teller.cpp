@@ -32,7 +32,7 @@ void Teller::handleOffers(Receipt& receipt, SupermarketCatalog* catalog, const S
     }
 }
 
-void Teller::addProductToReceiept(const ProductQuantity& productQuantity, Receipt& receipt) const {
+void Teller::addProductToReceipt(const ProductQuantity& productQuantity, Receipt& receipt) const {
     Product p = productQuantity.getProduct();
     double quantity = productQuantity.getQuantity();
     double unitPrice = catalog->getUnitPrice(p);
@@ -46,7 +46,7 @@ Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
     Receipt receipt{};
     std::vector<ProductQuantity> productQuantities = theCart.getItems();
     for (const auto& pq: productQuantities) {
-        addProductToReceiept(pq, receipt);
+        addProductToReceipt(pq, receipt);
     }
     handleOffers(receipt, catalog, theCart);
 
