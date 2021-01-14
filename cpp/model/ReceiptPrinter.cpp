@@ -2,7 +2,7 @@
 
 
 
-std::string ReceiptPrinter::printReceipt(const Receipt &receipt) {
+std::string ReceiptPrinter::printReceipt(const Receipt &receipt) const {
     std::string result;
     for (const auto &item : receipt.getItems()) {
         result.append(presentReceiptItem(item));
