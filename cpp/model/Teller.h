@@ -18,9 +18,10 @@ public:
 
     void handleOffers(Receipt& receipt, SupermarketCatalog* catalog, const ShoppingCart& cart);
 
+    void addProductToReceiept(const ProductQuantity& productQuantity, Receipt& receipt) const;
+
 private:
     SupermarketCatalog* catalog;
-//    std::map<Product, Offer> offers;
 };
 
 

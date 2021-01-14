@@ -14,6 +14,8 @@ void Teller::addSpecialOffer(SpecialOfferType offerType, const Product& product,
     OfferRepository::getInstance().addOffer(offer);
 }
 
+
+
 void Teller::handleOffers(Receipt& receipt, SupermarketCatalog* catalog, const ShoppingCart& cart) {
     for (const auto& productQuantity : cart.getProductQuantities()) {
         Product product = productQuantity.first;
@@ -30,17 +32,24 @@ void Teller::handleOffers(Receipt& receipt, SupermarketCatalog* catalog, const S
     }
 }
 
+void Teller::addProductToReceiept(const ProductQuantity& productQuantity, Receipt& receipt) const {
+    Product p = productQuantity.getProduct();
+    double quantity = productQuantity.getQuantity();
+    double unitPrice = catalog->getUnitPrice(p);
+    double price = quantity * unitPrice;
+    receipt.addProduct(p, quantity, unitPrice, price);
+}
+
+
+
 Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
     Receipt receipt{};
     std::vector<ProductQuantity> productQuantities = theCart.getItems();
     for (const auto& pq: productQuantities) {
-        Product p = pq.getProduct();
-        double quantity = pq.getQuantity();
-        double unitPrice = catalog->getUnitPrice(p);
-        double price = quantity * unitPrice;
-        receipt.addProduct(p, quantity, unitPrice, price);
+        addProductToReceiept(pq, receipt);
     }
     handleOffers(receipt, catalog, theCart);
 
     return receipt;
 }
+
