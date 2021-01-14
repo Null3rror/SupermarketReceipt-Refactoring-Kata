@@ -14,7 +14,7 @@ public:
 
     void addSpecialOffer(SpecialOfferType offerType, const Product& product, double argument);
 
-    Receipt checksOutArticlesFrom(ShoppingCart theCart);
+    Receipt checksOutArticlesFrom(const ShoppingCart& theCart);
 
     void handleOffers(Receipt& receipt, SupermarketCatalog* catalog, const ShoppingCart& cart);
 

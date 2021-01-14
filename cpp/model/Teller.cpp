@@ -42,7 +42,7 @@ void Teller::addProductToReceipt(const ProductQuantity& productQuantity, Receipt
 
 
 
-Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
+Receipt Teller::checksOutArticlesFrom(const ShoppingCart& theCart) {
     Receipt receipt{};
     std::vector<ProductQuantity> productQuantities = theCart.getItems();
     for (const auto& pq: productQuantities) {
