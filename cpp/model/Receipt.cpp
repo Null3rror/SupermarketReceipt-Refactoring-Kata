@@ -9,7 +9,7 @@ void Receipt::addDiscount(const Discount& discount) {
 }
 
 void Receipt::addProduct(const Product& product, double quantity, double price, double totalPrice) {
-    items.push_back(ReceiptItem(product, quantity, price, totalPrice));
+    items.emplace_back(ReceiptItem(product, quantity, price, totalPrice));
 }
 
 std::vector<Discount> Receipt::getDiscounts() const {
