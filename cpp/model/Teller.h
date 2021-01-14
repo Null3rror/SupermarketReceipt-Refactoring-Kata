@@ -16,6 +16,8 @@ public:
 
     Receipt checksOutArticlesFrom(ShoppingCart theCart);
 
+    void handleOffers(Receipt& receipt, SupermarketCatalog* catalog, const ShoppingCart& cart);
+
 private:
     SupermarketCatalog* catalog;
 //    std::map<Product, Offer> offers;

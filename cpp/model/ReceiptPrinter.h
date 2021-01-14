@@ -15,7 +15,7 @@ public:
 
     ReceiptPrinter(int columns) : columns(columns) {}
 
-    std::string printReceipt(const Receipt &receipt);
+    std::string printReceipt(const Receipt &receipt) const;
 
     std::string presentReceiptItem(const ReceiptItem &item) const;
 

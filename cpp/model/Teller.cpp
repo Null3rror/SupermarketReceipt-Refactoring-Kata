@@ -14,6 +14,22 @@ void Teller::addSpecialOffer(SpecialOfferType offerType, const Product& product,
     OfferRepository::getInstance().addOffer(offer);
 }
 
+void Teller::handleOffers(Receipt& receipt, SupermarketCatalog* catalog, const ShoppingCart& cart) {
+    for (const auto& productQuantity : cart.getProductQuantities()) {
+        Product product = productQuantity.first;
+        double quantity = productQuantity.second;
+        if (OfferRepository::getInstance().isOfferForProduct(product)) {
+            auto offer = OfferRepository::getInstance().getOfferForProduct(product);
+            double unitPrice = catalog->getUnitPrice(product);
+            double discountAmount = offer->calculateDiscountAmount(unitPrice, quantity);
+            Discount* discount = new Discount(offer->getDiscountDescription(), -discountAmount, product); // TODO: memory leak??
+
+            if (discountAmount != 0)
+                receipt.addDiscount(*discount);
+        }
+    }
+}
+
 Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
     Receipt receipt{};
     std::vector<ProductQuantity> productQuantities = theCart.getItems();
@@ -24,7 +40,7 @@ Receipt Teller::checksOutArticlesFrom(ShoppingCart theCart) {
         double price = quantity * unitPrice;
         receipt.addProduct(p, quantity, unitPrice, price);
     }
-    theCart.handleOffers(receipt, catalog);
+    handleOffers(receipt, catalog, theCart);
 
     return receipt;
 }

@@ -1,19 +1,13 @@
-//
-// Created by sdargo on 2/4/19.
-//
-
 #include "ReceiptPrinter.h"
 
 
 
-std::string ReceiptPrinter::printReceipt(const Receipt &receipt) {
+std::string ReceiptPrinter::printReceipt(const Receipt &receipt) const {
     std::string result;
-    for (const auto &item : receipt.getItems())
-    {
+    for (const auto &item : receipt.getItems()) {
         result.append(presentReceiptItem(item));
     }
-    for (const auto &discount : receipt.getDiscounts())
-    {
+    for (const auto &discount : receipt.getDiscounts()) {
         result.append(presentDiscount(discount));
     }
     result.append("\n");
@@ -27,8 +21,7 @@ std::string ReceiptPrinter::presentReceiptItem(const ReceiptItem &item) const {
 
     std::string line = formatLineWithWhitespace(name, price);
 
-    if (item.getQuantity() != 1)
-    {
+    if (item.getQuantity() != 1) {
         line += "  " + getFormattedNumberAsString(item.getPrice(), 2) + " * " + presentQuantity(item) + "\n";
     }
     return line;
@@ -49,8 +42,7 @@ std::string ReceiptPrinter::presentTotal(const Receipt &receipt) const {
 std::string ReceiptPrinter::formatLineWithWhitespace(const std::string &name, const std::string &value) const {
     int whitespaceSize = columns - name.length() - value.length();
     std::string whitespace;
-    for (int i = 0; i < whitespaceSize; i++)
-    {
+    for (int i = 0; i < whitespaceSize; i++) {
         whitespace.append(" ");
     }
     return name + whitespace + value + "\n";
@@ -62,8 +54,8 @@ std::string ReceiptPrinter::presentPrice(double price) const {
 
 std::string ReceiptPrinter::presentQuantity(const ReceiptItem &item) {
     return ProductUnit::Each == item.getProduct().getUnit()
-            ? getFormattedNumberAsString(item.getQuantity(), 0)
-            : getFormattedNumberAsString(item.getQuantity(), 3);
+           ? getFormattedNumberAsString(item.getQuantity(), 0)
+           : getFormattedNumberAsString(item.getQuantity(), 3);
 }
 
 std::string ReceiptPrinter::getFormattedNumberAsString(double number, int precision) {

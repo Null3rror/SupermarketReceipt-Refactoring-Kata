@@ -24,18 +24,4 @@ void ShoppingCart::addItemQuantity(const Product& product, double quantity) {
 }
 
 
-void ShoppingCart::handleOffers(Receipt& receipt, SupermarketCatalog* catalog) {
-    for (const auto& productQuantity : productQuantities) {
-        Product product = productQuantity.first;
-        double quantity = productQuantity.second;
-        if (OfferRepository::getInstance().isOfferForProduct(product)) {
-            auto offer = OfferRepository::getInstance().getOfferForProduct(product);
-            double unitPrice = catalog->getUnitPrice(product);
-            double discountAmount = offer->calculateDiscountAmount(unitPrice, quantity);
-            Discount* discount = new Discount(offer->getDiscountDescription(), -discountAmount, product); // TODO: memory leak??
 
-            if (discountAmount != 0)
-                receipt.addDiscount(*discount);
-        }
-    }
-}

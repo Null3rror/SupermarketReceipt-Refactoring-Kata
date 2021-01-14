@@ -20,7 +20,6 @@ public:
 
     void addItemQuantity(const Product& product, double quantity);
 
-    void handleOffers(Receipt& receipt, SupermarketCatalog* catalog);
 
 private:
     std::vector<ProductQuantity> items;
