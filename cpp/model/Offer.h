@@ -3,6 +3,8 @@
 
 
 #include "Product.h"
+#include "map"
+#include "vector"
 #include "SpecialOfferType.h"
 
 class Offer {
@@ -52,6 +54,13 @@ class AmountOffer : public Offer {
 public:
     AmountOffer(const SpecialOfferType& offerType, const Product& product, double argument);
     virtual double calculateDiscountAmount(double unitPrice, double quantity) const override;
+};
+
+class BundleOffer {
+public:
+    BundleOffer(const SpecialOfferType& offerType, const std::map<const Product, double>& productsArguments);
+private:
+    std::vector<PercentageOffer> offers;
 };
 
 
